@@ -204,13 +204,17 @@ export default function App() {
                                 <Grid item>
                                   <Grid item>
                                     <img
-                                      src={`https://icon-icons.com/icons2/2607/PNG/32/weather_sunset_sun_down_sea_icon_156092.png`}
+                                      src={
+                                        "https://icon-icons.com/icons2/2607/PNG/32/weather_sunset_sun_down_sea_icon_156092.png"
+                                      }
                                       alt="sunSet"
                                     />
                                   </Grid>
                                   <Grid item>
                                     <img
-                                      src={`https://icon-icons.com/icons2/2607/PNG/32/weather_sunrise_sun_up_sea_icon_156089.png`}
+                                      src={
+                                        "https://icon-icons.com/icons2/2607/PNG/32/weather_sunrise_sun_up_sea_icon_156089.png"
+                                      }
                                       alt="sunRise"
                                     />
                                   </Grid>
@@ -221,7 +225,7 @@ export default function App() {
                                       variant="subtitle1"
                                       gutterBottom
                                     >
-                                      {`${weather.sys.sunset}`}
+                                      {`${new Date(weather.sys.sunset)}`}
                                     </Typography>
                                   </Grid>
                                   <Grid item>
