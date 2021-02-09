@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import moment from "moment";
 import "./styles.css";
 import SearchIcon from "@material-ui/icons/Search";
 import {
@@ -12,9 +13,11 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid
+  Grid,
+  SvgIcon
 } from "@material-ui/core";
-
+import { ReactComponent as SunRise } from "../icon/sunrise.svg";
+import { ReactComponent as SunSet } from "../icon/sunset.svg";
 const api = {
   key: "dccaf6aa0d20098d29d68bf74d603f83",
   url: "https://api.openweathermap.org/data/2.5/"
@@ -72,8 +75,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paperSun: {
     marginLeft: 20,
-    marginTop: 40,
-    height: 80,
+    marginTop: 35,
+    height: 100,
     width: 160
   },
   searchIcon: {
@@ -98,8 +101,8 @@ export default function App() {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
-  });*/
-  //console.warn("loc", location);
+  });
+  console.warn("loc", location);*/
   const handleOnKeyPress = (e) => {
     console.log("search");
     if (e.key === "Enter") {
@@ -113,6 +116,12 @@ export default function App() {
         });
     }
   };
+  const hourSunset = moment.unix(weather && weather.sys.sunset).format("kk:mm");
+  const hourSunrise = moment
+    .unix(weather && weather.sys.sunrise)
+    .format("kk:mm");
+  const speedWind = weather && Math.round(weather.wind.speed * 3.6);
+
   return (
     <Box>
       <Container maxWidth="lg">
@@ -190,7 +199,7 @@ export default function App() {
                               Vent:
                             </Typography>
                             <Typography variant="subtitle1" gutterBottom>
-                              {`vitesse: ${Math.round(weather.wind.speed)} m/s`}
+                              {`vitesse: ${speedWind} km/h`}
                             </Typography>
                             <Typography variant="subtitle1" gutterBottom>
                               {`direction : ${Math.round(weather.wind.deg)}°`}
@@ -199,23 +208,29 @@ export default function App() {
                         </Grid>
                         <Grid item>
                           <Paper className={classes.paperSun}>
-                            <Grid item xs={12}>
-                              <Grid container spacing={0}>
+                            <Grid item xs={60}>
+                              <Grid container spacing={3}>
                                 <Grid item>
                                   <Grid item>
-                                    <img
-                                      src={
-                                        "https://icon-icons.com/icons2/2607/PNG/32/weather_sunset_sun_down_sea_icon_156092.png"
-                                      }
-                                      alt="sunSet"
+                                    <SvgIcon
+                                      component={SunRise}
+                                      viewBox="0 0 32 32"
+                                      style={{
+                                        cursor: "pointer",
+                                        boxSizing: "content-box",
+                                        fontSize: "32px"
+                                      }}
                                     />
                                   </Grid>
                                   <Grid item>
-                                    <img
-                                      src={
-                                        "https://icon-icons.com/icons2/2607/PNG/32/weather_sunrise_sun_up_sea_icon_156089.png"
-                                      }
-                                      alt="sunRise"
+                                    <SvgIcon
+                                      component={SunSet}
+                                      viewBox="0 0 32 32"
+                                      style={{
+                                        cursor: "pointer",
+                                        boxSizing: "content-box",
+                                        fontSize: "32px"
+                                      }}
                                     />
                                   </Grid>
                                 </Grid>
@@ -225,7 +240,7 @@ export default function App() {
                                       variant="subtitle1"
                                       gutterBottom
                                     >
-                                      {`${new Date(weather.sys.sunset)}`}
+                                      {hourSunrise}
                                     </Typography>
                                   </Grid>
                                   <Grid item>
@@ -233,7 +248,7 @@ export default function App() {
                                       variant="subtitle1"
                                       gutterBottom
                                     >
-                                      {` ${weather.sys.sunrise}`}
+                                      {hourSunset}
                                     </Typography>
                                   </Grid>
                                 </Grid>
