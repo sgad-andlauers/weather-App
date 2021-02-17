@@ -8,7 +8,7 @@ import {
   Typography,
   SvgIcon
 } from "@material-ui/core";
-import { ReactComponent as Wind_dir } from "../../icon/windDir.svg";
+//import { ReactComponent as Wind_dir } from "../../icon/wind.svg";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
@@ -56,7 +56,7 @@ export default function ToolBarWeather(props) {
                   </Typography>
                 </Box>
                 <Box>
-                  <SvgIcon
+                  {/*<SvgIcon
                     component={Wind_dir}
                     viewBox="0 0 24 24"
                     style={{
@@ -64,7 +64,7 @@ export default function ToolBarWeather(props) {
                       boxSizing: "content-box",
                       fontSize: "32px"
                     }}
-                  />
+                  />*/}
                 </Box>
               </Box>
             </Paper>
