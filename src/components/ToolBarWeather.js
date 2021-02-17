@@ -1,7 +1,14 @@
 import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Box, Paper } from "@material-ui/core";
-
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Paper,
+  Typography,
+  SvgIcon
+} from "@material-ui/core";
+import { ReactComponent as Wind_dir } from "../../icon/windDir.svg";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
@@ -26,30 +33,40 @@ export default function ToolBarWeather(props) {
     fells_like,
     pressure,
     humidity,
-    sunSet,
-    sunRise
+    onClickOpen
   } = props;
   const [open, setOpen] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar onclick={handleClickOpen}>
+        <Toolbar onclick={onClickOpen}>
           <Box display="flex">
-            <Paper>{icon}</Paper>
             <Paper>
-              {`${temp} °C`}
-              <Box>{`${temp_max} °C | ${temp_min}°C`}</Box>
+              <Box display="flex">
+                <Box>
+                  <img src={icon} alt="openweather" />
+                </Box>
+                <Box>
+                  <Typography variant="subtitle1" gutterBottom align="center">
+                    {`${temp} °C`}
+                  </Typography>
+                  <Typography variant="caption" gutterBottom>
+                    {`${temp_max} °C | ${temp_min}°C`}
+                  </Typography>
+                </Box>
+                <Box>
+                  <SvgIcon
+                    component={Wind_dir}
+                    viewBox="0 0 24 24"
+                    style={{
+                      cursor: "pointer",
+                      boxSizing: "content-box",
+                      fontSize: "32px"
+                    }}
+                  />
+                </Box>
+              </Box>
             </Paper>
           </Box>
         </Toolbar>
