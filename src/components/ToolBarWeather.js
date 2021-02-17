@@ -8,7 +8,8 @@ import {
   Typography,
   SvgIcon
 } from "@material-ui/core";
-//import { ReactComponent as Wind_dir } from "../../icon/windDir.svg";
+import { ReactComponent as windDir } from "../../icon/windDir.svg";
+import { Rotate90DegreesCcw } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
@@ -41,7 +42,7 @@ export default function ToolBarWeather(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar onclick={onClickOpen}>
-          <Box display="flex">
+          <Box>
             <Paper>
               <Box display="flex">
                 <Box>
@@ -56,15 +57,20 @@ export default function ToolBarWeather(props) {
                   </Typography>
                 </Box>
                 <Box>
-                  {/*<SvgIcon
-                    component={Wind_dir}
+                  <SvgIcon
+                    component={windDir}
                     viewBox="0 0 32 32"
                     style={{
                       cursor: "pointer",
                       boxSizing: "content-box",
-                      fontSize: "32px"
+                      fontSize: "32px",
+                      marginBottom: "16px",
+                      marginLeft: "12px"
                     }}
-                  />*/}
+                  />
+                  <Typography variant="caption" gutterBottom>
+                    {`${temp_max} °C | ${temp_min}°C`}
+                  </Typography>
                 </Box>
               </Box>
             </Paper>

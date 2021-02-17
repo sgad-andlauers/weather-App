@@ -37,8 +37,9 @@ export default function App() {
   const [open, setOpen] = React.useState(false);
   //const theme = useTheme();
   //const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  let lat = 48.58723;
-  let lon = 7.66708;
+
+  let lat = 47.6314911;
+  let lon = 7.3475505;
 
   // fetch vers api openweather
   const getCurrentWeather = async (lat, lon) => {
@@ -82,6 +83,7 @@ export default function App() {
             temp={Math.round(weather.main.temp)}
             temp_max={Math.round(weather.main.temp_max)}
             temp_min={Math.round(weather.main.temp_min)}
+            wind_dir={Math.round(weather.wind.deg)}
           />
           /** ------------------------------------------------- listItem ---------------------------------------------------------------------- */
           /** ------------------------------------------------- dialBox ----------------------------------------------------------------------- */
