@@ -29,7 +29,6 @@ export default function App() {
   const handleClickClose = () => {
     setOpen(false);
   };
-  /** toto tata lol */
   return (
     <div>
       <div id="geocoder-container" />
