@@ -1,19 +1,12 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  Paper,
-  Typography,
-  SvgIcon
-} from "@material-ui/core";
-import { ReactComponent as windDir } from "../../icon/windDir.svg";
-import { Rotate90DegreesCcw } from "@material-ui/icons";
+import { AppBar, Toolbar, Box, Paper, Typography } from "@material-ui/core";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import axios from "axios";
+import PropTypes from "prop-types";
+
+import TempComponents from "./tempComponents/TempComponents";
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
   menuButton: {
     marginRight: theme.spacing(2)
   },
@@ -21,62 +14,99 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1
   }
 }));
-
+const api = {
+  key: "dccaf6aa0d20098d29d68bf74d603f83",
+  url: "https://api.openweathermap.org/data/2.5/"
+};
 export default function ToolBarWeather(props) {
   const classes = useStyles();
-  const {
-    icon,
-    temp,
-    temp_max,
-    temp_min,
-    wind_dir,
-    wind_speed,
-    fells_like,
-    pressure,
-    humidity,
-    onClickOpen
-  } = props;
-  const [open, setOpen] = React.useState(false);
+  const { icon, wind, onClickOpen, temperature, coordonnees } = props;
+  const [weather, setWeather] = useState(null);
+
+  // questionnement de l'api openweather
+  const getCurrentWeather = async (coordonnees) => {
+    console.log("get api");
+    const res = await axios.get(
+      `${api.url}weather?lat=${coordonnees[0]}&lon=${coordonnees[1]}&units=metric&lang=fr&appid=${api.key}`
+    );
+    setWeather(res.data);
+  };
+  useMemo(() => {
+    console.log("use api");
+    getCurrentWeather(coordonnees);
+  }, [coordonnees]);
+  console.warn("essay meteo", weather);
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar onclick={onClickOpen}>
-          <Box>
-            <Paper>
-              <Box display="flex">
-                <Box>
-                  <img src={icon} alt="openweather" />
+      {weather && (
+        <AppBar position="static">
+          <Toolbar onclick={onClickOpen}>
+            <Box>
+              <Paper>
+                {/** affichage icon weather */}
+                <Box display="flex">
+                  {icon && (
+                    <Box>
+                      <img
+                        src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                        alt="openweather"
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          marginTop: "5px"
+                        }}
+                      />
+                    </Box>
+                  )}
+                  {/** affichage température */}
+                  <Box
+                    display="grid"
+                    style={{ marginLeft: "5px", marginTop: "5px" }}
+                  >
+                    {temperature && (
+                      <>
+                        <Typography variant="subtitle1" align="center">
+                          {`${Math.round(weather.main.temp)} ° C`}
+                        </Typography>
+                        <TempComponents
+                          temperature={temperature}
+                          weather={weather}
+                        />
+                      </>
+                    )}
+                  </Box>
+                  {/**affichage wind */}
+                  {wind && (
+                    <Box display="grid" style={{ marginLeft: "5px" }}>
+                      <ArrowUpwardIcon
+                        fontSize="large"
+                        style={{
+                          marginLeft: "30px",
+                          marginTop: "5px",
+                          transform: `rotate(${Math.round(
+                            weather.wind.deg
+                          )}deg)`
+                        }}
+                      />
+                      <Typography variant="caption">{`${Math.round(
+                        weather.wind.speed * 3.6
+                      )} km/h | ${Math.round(
+                        weather.wind.speed
+                      )} m/s`}</Typography>
+                    </Box>
+                  )}
                 </Box>
-                <Box>
-                  <Typography variant="subtitle1" gutterBottom align="center">
-                    {`${temp} °C`}
-                  </Typography>
-                  <Typography variant="caption" gutterBottom>
-                    {`${temp_max} °C | ${temp_min}°C`}
-                  </Typography>
-                </Box>
-                <Box>
-                  <SvgIcon
-                    component={windDir}
-                    viewBox="0 0 32 32"
-                    style={{
-                      cursor: "pointer",
-                      boxSizing: "content-box",
-                      fontSize: "32px",
-                      marginBottom: "16px",
-                      marginLeft: "12px"
-                    }}
-                  />
-                  <Typography variant="caption" gutterBottom>
-                    {`${temp_max} °C | ${temp_min}°C`}
-                  </Typography>
-                </Box>
-              </Box>
-            </Paper>
-          </Box>
-        </Toolbar>
-      </AppBar>
+              </Paper>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      )}
     </div>
   );
 }
+ToolBarWeather.propTypes = {
+  icon: PropTypes.bool.isRequired,
+  temperature: PropTypes.bool.isRequired,
+  wind: PropTypes.bool.isRequired
+};
